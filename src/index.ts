@@ -52,6 +52,5 @@ function createServer(){
 const myFile = fs.readFileSync("myFile.json")
 
 const myJson: Book[] = JSON.parse(myFile.toString())
-let myBook = myJson[0]
 
 createServer()
