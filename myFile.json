@@ -1,0 +1,62 @@
+[
+  {
+    "_id": 1,
+    "nazov": "Meno1",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 1999,
+    "vydavatelstvo": "VydavatelstvoA",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 123
+  },
+  {
+    "_id": 2,
+    "nazov": "Meno2",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 2000,
+    "vydavatelstvo": "VydavatelstvoB",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 456
+  },
+  {
+    "_id": 3,
+    "nazov": "Meno3",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 2010,
+    "vydavatelstvo": "VydavatelstvoC",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 789
+  },
+  {
+    "_id": 4,
+    "nazov": "Meno4",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 2013,
+    "vydavatelstvo": "VydavatelstvoD",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 101
+  },
+  {
+    "_id": 5,
+    "nazov": "Meno5",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 2021,
+    "vydavatelstvo": "VydavatelstvoE",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 112
+  },
+  {
+    "_id": 6,
+    "nazov": "Meno6",
+    "autor": ["Autor1", "Autor2"],
+    "zaner": ["Zaner1", "Zaner2"],
+    "rok_vydania": 2030,
+    "vydavatelstvo": "VydavatelstvoF",
+    "krajina_vydania": "Slovensko",
+    "pocet_stran": 131
+  }
+]
