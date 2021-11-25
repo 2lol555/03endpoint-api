@@ -1,11 +1,10 @@
 import fs from "fs"
 import express, {json, urlencoded} from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
 import http from "http";
 
 import {Book} from "./types/Book";
-import {lookupBook} from "./MyMethods";
+import {checkIfBookExists, lookupBook, saveFile} from "./MyMethods";
 
 let app;
 
@@ -22,8 +21,7 @@ function createServer(){
 
     app.get("/api/library/book/:id/info", (req, res) => {
         const id = req.params["id"]
-
-        let myBook = lookupBook(parseInt(id) , myJson)
+        let myBook = lookupBook(id, myJson)
 
         if (myBook == undefined){
             res.json({Response:"Kniha s daným ID nebola nájdená"})
@@ -37,20 +35,68 @@ function createServer(){
     app.post("/api/library/book/:id/info", (req, res) => {
         const id = req.params["id"]
 
-        let myBook = lookupBook(parseInt(id) , myJson)
+        let myBook = lookupBook(id, myJson)
 
-        if (myBook == undefined){
-            res.json({Response:"Kniha s daným ID nebola nájdená"})
-        }
-        else {
+        if (checkIfBookExists(myBook)){
             res.json(myBook)
         }
+        else {
+            res.json({Response:"Kniha s daným ID nebola nájdená"})
+        }
+
+    })
+
+    app.put("/api/library/book/:id/add", (req, res) => {
+        const id = req.params["id"]
+
+        let myBook = lookupBook(id, myJson)
+
+        if (checkIfBookExists(myBook)){
+            res.json({Response:"Kniha s daným ID už existuje"})
+        }
+        else {
+            console.log(myJson)
+            myJson.push(
+                {
+                _id: id.toString(),
+                nazov: req.body["name"],
+                autor: req.body["autor"],
+                zaner: req.body["zaner"],
+                rok_vydania: req.body["rok_vydania"],
+                vydavatelstvo: req.body["vydavatelstvo"],
+                krajina_vydania: req.body["krajina_vydania"],
+                pocet_stran: req.body["pocet_stran"],
+            }
+            )
+            saveFile(myJson)
+            console.log(myJson)
+            res.json({Response:"Kniha bola úspešne uložená"})
+        }
+    })
+
+    app.delete("/api/library/book/:id/delete", (req, res) => {
+        const id = req.params["id"]
+        let myBook = lookupBook(id, myJson)
+
+        if (checkIfBookExists(myBook)){
+            for (let i=0; i < myJson.length; i++) {
+                if (myJson[i]._id == id.toString()){
+                    myJson.splice(i, 1)
+                }
+            }
+            saveFile(myJson)
+            res.json({Response:"Kniha bola úspešne vymazaná"})
+        }else {
+            res.json({Response:"Kniha s daným ID nebola nájdená"})
+        }
+
 
     })
 }
 
 const myFile = fs.readFileSync("myFile.json")
-
+console.log(myFile.toString())
 const myJson: Book[] = JSON.parse(myFile.toString())
+
 
 createServer()
