@@ -2,9 +2,10 @@ import fs from "fs"
 import express, {json, urlencoded} from "express";
 import cors from "cors";
 import http from "http";
+import {v4 as uuidv4} from "uuid";
 
 import {Book} from "./types/Book";
-import {checkIfBookExists, lookupBook, saveFile} from "./MyMethods";
+import {checkIfBookExists, lookupAuthor, lookupBook, lookupName, saveFile} from "./MyMethods";
 
 let app;
 
@@ -46,32 +47,51 @@ function createServer(){
 
     })
 
-    app.put("/api/library/book/:id/add", (req, res) => {
-        const id = req.params["id"]
+    app.post("/api/library/book/find/author", (req, res) => {
+        const substring = req.body["name"]
+        console.log(substring)
+        let results = lookupAuthor(substring, myJson)
+        console.log(results)
+        res.json(results)
 
+
+    })
+
+    app.post("/api/library/book/find/name", (req, res) => {
+        const substring = req.body["name"]
+        console.log(substring)
+        let results = lookupName(substring, myJson)
+        console.log(results)
+        res.json(results)
+
+
+    })
+
+    app.put("/api/library/book/add", (req, res) => {
+        const id = uuidv4();
         let myBook = lookupBook(id, myJson)
 
-        if (checkIfBookExists(myBook)){
-            res.json({Response:"Kniha s daným ID už existuje"})
+        while (checkIfBookExists(myBook)){
+            const id = uuidv4();
+            myBook = lookupBook(id, myJson);
         }
-        else {
-            console.log(myJson)
-            myJson.push(
-                {
-                _id: id.toString(),
-                nazov: req.body["name"],
-                autor: req.body["autor"],
-                zaner: req.body["zaner"],
-                rok_vydania: req.body["rok_vydania"],
-                vydavatelstvo: req.body["vydavatelstvo"],
-                krajina_vydania: req.body["krajina_vydania"],
-                pocet_stran: req.body["pocet_stran"],
-            }
-            )
-            saveFile(myJson)
-            console.log(myJson)
-            res.json({Response:"Kniha bola úspešne uložená"})
+
+        console.log(myJson)
+        myJson.push(
+            {
+            _id: id.toString(),
+            nazov: req.body["nazov"],
+            autor: req.body["autor"],
+            zaner: req.body["zaner"],
+            rok_vydania: req.body["rok_vydania"],
+            vydavatelstvo: req.body["vydavatelstvo"],
+            krajina_vydania: req.body["krajina_vydania"],
+            pocet_stran: req.body["pocet_stran"],
         }
+        )
+        saveFile(myJson)
+        console.log(myJson)
+        res.json({Response:"Kniha bola úspešne uložená" + "id: " + id})
     })
 
     app.delete("/api/library/book/:id/delete", (req, res) => {
